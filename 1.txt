@@ -1,0 +1,96 @@
+#Метод половинного деления
+def bisection_method(f, a, b, eps, max_iter):
+
+    if a > b:
+        a, b = b, a
+
+    for i in range(0, max_iter):
+
+        c = (a + b)/2
+
+        if f(c - eps) > f(c + eps):
+            a = c
+        else:
+            b = c
+
+        if abs(a - b) < eps: 
+            break
+
+    print('Count of iterations:', i)
+
+    return (a + b)/2
+
+def f(x):
+    return x**3 - 2*x - 5
+
+root = bisection_method(f, -10, 10, 0.000001, 1000)
+print(root) 
+
+Метод золотого сечения
+import numpy as np
+phi = (np.sqrt(5) + 1)/2
+def golden_section_method(f, a, b, eps, max_iter):
+
+    if a > b:
+        a, b = b, a
+
+    for i in range(0, max_iter):
+
+        x1 = b - (b - a)/phi
+        x2 = a + (b - a)/phi
+
+        if f(x1) >= f(x2):
+            a = x1
+        else:
+            b = x2
+
+        if abs(a - b) < eps: 
+            break
+
+    print('Count of iterations:', i)
+
+    return (a + b)/2
+
+minimum = golden_section_method(f, -10, 10, 0.000001, 1000)
+print(minimum)
+
+
+def fibonacci(n):
+    if n < 1: 
+        return 0, 0
+    if n < 2: 
+        return 0, 1
+    prev_num = 0
+    num = 1
+    while n>num:
+        
+        prev_num, num = num, num+prev_num
+    return prev_num, num
+
+
+
+def fibb_func1(f, xa, xb, eps, max_iter):
+
+    if xa>xb: 
+        xa, xb = xb, xa
+    f_n, f_n_1 = fibonacci((xb-xa)/eps) #получаем число
+    while f_n_1 != f_n: #пока fn+1 != fn
+        d = xb-xa #d = b-a промежуток
+        if abs((d)) < eps: 
+            break
+        f_tmp = f_n_1 - f_n #число фибо f(n-1)
+        x1 = xa + d * f_tmp / f_n_1
+        x2 = xa + d * f_n / f_n_1
+        f_n_1 = f_n #сдвигаемся влево
+        f_n = f_tmp
+        if f(x1) > f(x2):
+            xa = x1
+        else: xb = x2
+
+        
+        
+    return (xa+xb) * 0.5
+
+
+fibo=fibb_func1(f, -10, 10, 0.000001, 1000)
+print(fibo)
