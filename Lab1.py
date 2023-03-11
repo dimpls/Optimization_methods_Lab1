@@ -16,6 +16,7 @@ def bi_sect(func, a, b, eps, max_iters) -> float:
 
     cnt: int = 0
 
+
     for cnt in range(max_iters):
 
         c = (a + b) * .5
