@@ -1,9 +1,8 @@
-import numpy as np
+PHI = (1 + 5 ** 0.5) * .5
 
-PHI = (1 + 5 ** 0.5) / 2
 
 def func(x):
-    return x ** 3 - 2 * x - 5
+    return x ** 2 - 3 * x + 2
 
 
 def bi_sect(func, a, b, eps, max_iters) -> float:
@@ -11,6 +10,7 @@ def bi_sect(func, a, b, eps, max_iters) -> float:
     Метод Дихотомии
     """
     c: float = .0
+
     if a > b:
         a, b = b, a
 
@@ -18,14 +18,14 @@ def bi_sect(func, a, b, eps, max_iters) -> float:
 
     for cnt in range(max_iters):
 
-        c = (a + b) * 0.5
+        c = (a + b) * .5
 
         if func(c + eps) > func(c - eps):
             b = c
         else:
             a = c
 
-        if abs(b - a) < eps:
+        if (b - a) < eps:
             break
 
     print('Кол-во итераций:', cnt)
@@ -33,11 +33,12 @@ def bi_sect(func, a, b, eps, max_iters) -> float:
     return (a + b) * .5
 
 
-def golden_ratio(func, a, b, eps, max_iters):
+def golden_ratio(func, a, b, eps, max_iters) -> float:
     """
     Метод Золотого сечения
+
     """
-    c: float = .0
+
     if a > b:
         a, b = b, a
 
@@ -73,34 +74,42 @@ def fibonacci(n):
     return prev_num, num
 
 
-def fib(func, a, b, eps, max_iters):
+def fib(func, a, b, eps):
     """
        Метод Фибоначчи
     """
 
-
     if a > b:
         a, b = b, a
 
-    f_n, f_n_1 = fibonacci((b - a) / eps)
+    f_n, f_n_p_1 = fibonacci((b - a) / eps)
 
-    while f_n_1 != f_n:
+    cnt: int = 0
+
+    while f_n_p_1 != f_n:
+        cnt += 1
+
         d = b - a
+
         if abs(d) < eps:
             break
-        f_tmp = f_n_1 - f_n # Число Фибоначчи f(n - 1)
 
-        x1 = a + d * f_tmp / f_n_1
-        x2 = a + d * f_n / f_n_1
+        f_n_m_1 = f_n_p_1 - f_n
 
-        f_n_1 = f_n # сдвигаем влево
-        f_n = f_tmp
+        x1 = a + d * f_n_m_1 / f_n_p_1
+        x2 = a + d * f_n / f_n_p_1
+
+        f_n_p_1 = f_n
+        f_n = f_n_m_1
+
         if func(x1) > func(x2):
             a = x1
         else:
             b = x2
 
+    print('Кол-во итераций:', cnt)
+
     return (a + b) * .5
 
-asw = fib(func, -10, 10, 0.000001, 100)
-print(asw)
+
+print(bi_sect(func, -3, 3, 0.000001, 100), golden_ratio(func, -3, 3, 0.000001, 100), fib(func, -3, 3, 0.000001))
